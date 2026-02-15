@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="WebCrawlerCli.Tests" />
+    <InternalsVisibleTo Include="CrawlerCli.Tests" />
   </ItemGroup>
 
   <ItemGroup>
