@@ -25,3 +25,6 @@ jobs:
 
       - name: Build
         run: dotnet build Crawler.slnx --configuration Release --no-restore --nologo
+
+      - name: Test
+        run: dotnet test Crawler.slnx --configuration Release --no-build --nologo
