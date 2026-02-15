@@ -8,7 +8,7 @@
 
 A high-performance, domain-locked CLI web crawler built with C# and .NET 10.
 
-[Features](#features) • [Getting Started](#getting-started) • [Usage](#usage) • [Export Formats](#export-formats) • [Docker](#docker)
+[Features](#features) • [Installation](#installation) • [Usage](#usage) • [Export Formats](#export-formats) • [Docker](#docker) • [Documentation](#documentation)
 
 </div>
 
@@ -21,19 +21,29 @@ A high-performance, domain-locked CLI web crawler built with C# and .NET 10.
 - **Resilient** — Graceful handling of timeouts, HTTP errors, non-HTML content, and infinite redirects
 - **Lightweight** — Pure HTTP-based crawling with no browser engine overhead
 
-## Getting Started
+## Installation
 
-### Prerequisites
+### Pre-built Binaries
 
+Download the latest release for your platform from the [Releases page](https://github.com/nusbru/crawler/releases):
+
+- **Windows** — `crawler-win-x64.zip` (native executable)
+- **macOS** — `crawler-osx-x64.tar.gz` (native executable)
+- **Linux** — `crawler-linux-x64.tar.gz` (native executable)
+- **Linux (Flatpak)** — `io.github.bruno.crawler.flatpak` (sandboxed package)
+
+### Building from Source
+
+**Prerequisites:**
 - [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
 
-### Build
+**Build:**
 
 ```bash
 dotnet build
 ```
 
-### Run tests
+**Run tests:**
 
 ```bash
 dotnet test
@@ -100,7 +110,8 @@ Build and run the crawler as a container:
 
 ```bash
 docker build -t crawler .
-docker run --rm crawler --url https://example.com
+docker run --rm -v "$PWD:/work" crawler --url https://www.example.com --format json --outputPath /work/results.json
+
 ```
 
 ## Architecture
@@ -115,6 +126,15 @@ The crawler uses a **producer/consumer** pattern with these core components:
 | `OutputWriter` | Collects crawl edges and handles grouped console output or file export |
 
 The `HttpClient` is configured with `SocketsHttpHandler` for connection pooling and reuse, preventing socket exhaustion during large crawls.
+
+## Documentation
+
+For detailed technical information about the project, see the following documents:
+
+- **[PRD.md](docs/PRD.md)** — Product Requirements Document outlining goals, objectives, and constraints
+- **[FRD.md](docs/FRD.md)** — Functional Requirements Document detailing the technical stack and system architecture
+- **[ADR.md](docs/ADR.md)** — Architecture Decision Records documenting key design choices and rationale
+- **[CICD.md](docs/CICD.md)** — CI/CD Pipeline Strategy covering build automation and deployment workflows
 
 ## Flatpak
 
