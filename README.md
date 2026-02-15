@@ -134,6 +134,7 @@ For detailed technical information about the project, see the following document
 - **[PRD.md](docs/PRD.md)** — Product Requirements Document outlining goals, objectives, and constraints
 - **[FRD.md](docs/FRD.md)** — Functional Requirements Document detailing the technical stack and system architecture
 - **[ADR.md](docs/ADR.md)** — Architecture Decision Records documenting key design choices and rationale
+- **[TRADEOFFS.md](docs/TRADEOFFS.md)** — Trade-off analysis of architecture choices, alternatives, and adoption triggers
 - **[CICD.md](docs/CICD.md)** — CI/CD Pipeline Strategy covering build automation and deployment workflows
 
 ## Flatpak
