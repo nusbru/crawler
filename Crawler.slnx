@@ -1,0 +1,4 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Project Path="src/CrawlerCli/CrawlerCli.csproj" />
+</Solution>
