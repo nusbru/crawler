@@ -136,7 +136,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: bruno/crawler
+          images: nusbru/crawler
           tags: |
             type=raw,value=${{ inputs.release_tag }}
             type=raw,value=latest
