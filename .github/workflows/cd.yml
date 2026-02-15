@@ -96,13 +96,13 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y flatpak flatpak-builder
-          flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-          flatpak install -y flathub org.freedesktop.Platform//24.08 org.freedesktop.Sdk//24.08
+          flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+          flatpak install --user -y flathub org.freedesktop.Platform//24.08 org.freedesktop.Sdk//24.08
 
       - name: Build flatpak bundle
         run: |
           mkdir -p artifacts/release
-          flatpak-builder --force-clean --repo=flatpak-repo flatpak-build packaging/flatpak/io.github.bruno.crawler.json
+          flatpak-builder --user --force-clean --repo=flatpak-repo flatpak-build packaging/flatpak/io.github.bruno.crawler.json
           flatpak build-bundle flatpak-repo "artifacts/release/crawler-${{ inputs.release_tag }}-linux-x64.flatpak" io.github.bruno.crawler stable
 
       - name: Upload flatpak artifact
