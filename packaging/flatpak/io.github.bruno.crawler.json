@@ -1,0 +1,26 @@
+{
+  "app-id": "io.github.bruno.crawler",
+  "runtime": "org.freedesktop.Platform",
+  "runtime-version": "24.08",
+  "sdk": "org.freedesktop.Sdk",
+  "command": "crawler",
+  "branch": "stable",
+  "finish-args": [
+    "--share=network"
+  ],
+  "modules": [
+    {
+      "name": "crawler",
+      "buildsystem": "simple",
+      "build-commands": [
+        "install -Dm755 CrawlerCli /app/bin/crawler"
+      ],
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../artifacts/publish/linux-x64/CrawlerCli"
+        }
+      ]
+    }
+  ]
+}
