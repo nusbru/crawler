@@ -81,7 +81,7 @@ internal static class UrlNormalizer
         var targetHost = targetUri.Host.ToLowerInvariant();
         var baseHost = baseUri.Host.ToLowerInvariant();
 
-        // Exact match or subdomain
-        return targetHost == baseHost || targetHost.EndsWith($".{baseHost}");
+        // Exact match
+        return targetHost == baseHost;
     }
 }
