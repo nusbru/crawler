@@ -1,0 +1,42 @@
+{
+  "name": "Crawler",
+  "image": "mcr.microsoft.com/devcontainers/dotnet:10.0",
+  "postCreateCommand": "dotnet restore",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "dotnet.defaultSolution": "Crawler.slnx"
+      },
+      "extensions": [
+        "piousdeer.adwaita-theme",
+        "timheuer.awesome-copilot",
+        "ms-vscode.azure-repos",
+        "ms-dotnettools.csharp",
+        "ms-dotnettools.csdevkit",
+        "ms-azuretools.vscode-containers",
+        "richardwillis.vscode-entity-framework",
+        "mhutchie.git-graph",
+        "donjayamanne.githistory",
+        "github.vscode-github-actions",
+        "github.copilot-chat",
+        "github.vscode-pull-request-github",
+        "github.remotehub",
+        "golang.go",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "bierner.markdown-mermaid",
+        "davidanson.vscode-markdownlint",
+        "ms-dotnettools.vscode-dotnet-runtime",
+        "patcx.vscode-nuget-gallery",
+        "ms-python.vscode-pylance",
+        "ms-python.python",
+        "ms-python.debugpy",
+        "ms-python.vscode-python-envs",
+        "tal7aouy.rainbow-bracket",
+        "mechatroner.rainbow-csv",
+        "hashicorp.terraform",
+        "vscode-icons-team.vscode-icons",
+        "redhat.vscode-yaml"
+      ]
+    }
+  }
+}
