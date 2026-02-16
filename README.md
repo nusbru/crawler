@@ -127,9 +127,96 @@ The crawler uses a **producer/consumer** pattern with these core components:
 
 The `HttpClient` is configured with `SocketsHttpHandler` for connection pooling and reuse, preventing socket exhaustion during large crawls.
 
+## Design & Trade-offs
+
+### Design Decisions
+
+1. **Concurrency Model**:
+   - **Decision**: Uses a **producer/consumer** pattern via `System.Threading.Channels` with a bounded capacity (1000 items).
+   - **Why**: This provides natural backpressure (preventing memory exhaustion) and efficient worker coordination without complex locking or thread management. It scales well on a single node.
+   - **Alternative**: `Task.WhenAll` with `SemaphoreSlim` was considered but rejected because it lacks the clean separation of queuing and processing that Channels provide.
+
+2. **HTTP Strategy**:
+   - **Decision**: A single `HttpClient` configured with `SocketsHttpHandler`.
+   - **Why**: Enables connection pooling (avoiding socket exhaustion) and keeps the CLI runtime lightweight.
+   - **Trade-off**: Sharing a single client means we lack granular timeouts or retry policies per-request, which could be improved with `IHttpClientFactory` and resilience policies (e.g., Polly) for production-grade robustness.
+
+3. **HTML Parsing**:
+   - **Decision**: Uses **AngleSharp** for HTML5-compliant parsing.
+   - **Why**: It is robust, standards-aligned, and efficient for static HTML.
+   - **Trade-off**: It does not execute JavaScript. Sites relying heavily on client-side rendering (SPAs) will not be fully crawled. This is a deliberate choice to avoid the heavy resource overhead of a headless browser (like Playwright/Selenium).
+
+4. **Domain Locking**:
+   - **Decision**: Strict host matching and URL normalization (stripping fragments).
+   - **Why**: Prevents "leaking" the crawl to external sites and avoids duplicate work on `example.com/page#section`.
+
+### Trade-offs & Future Improvements
+
+- **Memory vs. Scale**: The crawler keeps visited URLs and results in memory (`ConcurrentDictionary`).
+  - *Current*: Fast and simple for small-to-medium sites.
+  - *Future*: For massive crawls, we would need an external store (Redis/SQLite) and streaming output to avoid OOM errors.
+
+- **Error Handling**: Currently "fail-soft" (logs errors and continues).
+  - *Current*: Ensures the crawl completes even if some pages fail.
+  - *Future*: Add exponential backoff/retries for transient errors (429/503) to improve completeness.
+
+- **Distribution**:
+  - *Current*: Self-contained binaries (~60MB) for ease of use (no .NET runtime required).
+  - *Trade-off*: Larger download size compared to framework-dependent builds.
+
+## Development Environment
+
+### Tools
+
+- **IDE:** VS Code
+- **Operating System:** Bluefin Linux
+- **AI Tools:** GitHub Copilot
+
+### AI Models Used
+
+- **Claude Opus 4.6** (Planning)
+- **OpenAI Codex** (Agent)
+- **Gemini** (Documentation)
+
+### VS Code Extensions
+
+- **Adwaita Theme** (`piousdeer.adwaita-theme`)
+- **Awesome Copilot** (`timheuer.awesome-copilot`)
+- **Azure Repos** (`ms-vscode.azure-repos`)
+- **C#** (`ms-dotnettools.csharp`)
+- **C# Dev Kit** (`ms-dotnettools.csdevkit`)
+- **Dev Containers** (`ms-vscode-remote.remote-containers`)
+- **Docker (Containers)** (`ms-azuretools.vscode-containers`)
+- **Entity Framework** (`richardwillis.vscode-entity-framework`)
+- **Git Graph** (`mhutchie.git-graph`)
+- **Git History** (`donjayamanne.githistory`)
+- **GitHub Actions** (`github.vscode-github-actions`)
+- **GitHub Copilot Chat** (`github.copilot-chat`)
+- **GitHub Pull Requests** (`github.vscode-pull-request-github`)
+- **GitHub Repositories (RemoteHub)** (`github.remotehub`)
+- **Go** (`golang.go`)
+- **Kubernetes Tools** (`ms-kubernetes-tools.vscode-kubernetes-tools`)
+- **Markdown Mermaid** (`bierner.markdown-mermaid`)
+- **markdownlint** (`davidanson.vscode-markdownlint`)
+- **.NET Runtime** (`ms-dotnettools.vscode-dotnet-runtime`)
+- **NuGet Gallery** (`patcx.vscode-nuget-gallery`)
+- **Pylance** (`ms-python.vscode-pylance`)
+- **Python** (`ms-python.python`)
+- **Python Debugger** (`ms-python.debugpy`)
+- **Python Environments** (`ms-python.vscode-python-envs`)
+- **Rainbow Brackets** (`tal7aouy.rainbow-bracket`)
+- **Rainbow CSV** (`mechatroner.rainbow-csv`)
+- **Remote Explorer** (`ms-vscode.remote-explorer`)
+- **Remote Repositories** (`ms-vscode.remote-repositories`)
+- **Remote - SSH** (`ms-vscode-remote.remote-ssh`)
+- **Remote - SSH: Editing** (`ms-vscode-remote.remote-ssh-edit`)
+- **Terraform** (`hashicorp.terraform`)
+- **vscode-icons** (`vscode-icons-team.vscode-icons`)
+- **YAML** (`redhat.vscode-yaml`)
+
 ## Documentation
 
-For detailed technical information about the project, see the following documents:
+For detailed technical information, see the following documents:
 
 - **[PRD.md](docs/PRD.md)** — Product Requirements Document outlining goals, objectives, and constraints
 - **[FRD.md](docs/FRD.md)** — Functional Requirements Document detailing the technical stack and system architecture
