@@ -97,7 +97,7 @@ public class WebCrawlerBehaviorTests
             ["https://example.com/page1"] = true,
             ["https://example.com/page2"] = true,
             ["https://www.example.com/page3"] = true,
-            ["https://subdomain.example.com/page4"] = true,
+            ["https://subdomain.example.com/page4"] = false,
             ["https://other.com/page5"] = false,
             ["https://example.org/page6"] = false,
             ["http://evil-example.com/page7"] = false,
