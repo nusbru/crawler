@@ -81,7 +81,12 @@ internal static class UrlNormalizer
         var targetHost = targetUri.Host.ToLowerInvariant();
         var baseHost = baseUri.Host.ToLowerInvariant();
 
-        // Exact match
+        // Normalize www. prefix so example.com and www.example.com are equivalent
+        if (targetHost.StartsWith("www."))
+            targetHost = targetHost[4..];
+        if (baseHost.StartsWith("www."))
+            baseHost = baseHost[4..];
+
         return targetHost == baseHost;
     }
 }
