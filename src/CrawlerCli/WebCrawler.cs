@@ -168,17 +168,14 @@ internal sealed class WebCrawler : IDisposable
 
                 var normalizedUri = UrlNormalizer.Normalize(resolvedUri);
 
-                // Check scope
-                if (!UrlNormalizer.IsInScope(normalizedUri, _baseUri))
-                {
-                    continue;
-                }
-
-                // Output the edge
+                // Record every discovered link
                 _outputWriter.WriteEdge(url, normalizedUri);
 
-                // Enqueue for crawling
-                await EnqueueUrlAsync(normalizedUri, cancellationToken);
+                // Only enqueue in-scope links for crawling
+                if (UrlNormalizer.IsInScope(normalizedUri, _baseUri))
+                {
+                    await EnqueueUrlAsync(normalizedUri, cancellationToken);
+                }
             }
         }
         catch (HttpRequestException ex)

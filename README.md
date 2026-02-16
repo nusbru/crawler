@@ -15,7 +15,7 @@ A high-performance, domain-locked CLI web crawler built with C# and .NET 10.
 ## Features
 
 - **Concurrent crawling** — Producer/consumer architecture using `System.Threading.Channels` for maximum throughput
-- **Domain-locked** — Automatically restricts crawling to the target domain and its subdomains
+- **Domain-locked** — Automatically restricts crawling to the target domain only
 - **URL normalization** — Deduplicates URLs by stripping fragments and normalizing trailing slashes
 - **Multiple export formats** — Output results as JSON, HTML, or CSV
 - **Resilient** — Graceful handling of timeouts, HTTP errors, non-HTML content, and infinite redirects
