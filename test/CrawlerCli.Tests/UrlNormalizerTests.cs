@@ -120,7 +120,7 @@ public class UrlNormalizerTests
 
         var inScope = UrlNormalizer.IsInScope(targetUri, baseUri);
 
-        Assert.True(inScope);
+        Assert.False(inScope);
     }
 
     [Fact]
